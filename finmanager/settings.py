@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'transactions',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finmanager.wsgi.application'
 
+AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
