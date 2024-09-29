@@ -10,23 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Initialize environment variables
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env(os.path.join(BASE_DIR, 'finmanager/.env'))
 
+# Secret Key & Debug
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)=_$^@72q%u71h*ems7zs5shs3w6w*l1(3_7rh3fb3c(*8pm96'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+# Allowed Hosts
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -37,6 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+
+    'transactions',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'finmanager.urls'
@@ -72,6 +76,10 @@ WSGI_APPLICATION = 'finmanager.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+# DATABASES = {
+#     'default': env.db(),
+# }
 
 DATABASES = {
     'default': {
@@ -114,10 +122,53 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
 
-STATIC_URL = 'static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSRF settings
+# CSRF_COOKIE_DOMAIN = '.example.org'
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://example.kg',
+# ]
+
+# CORS settings
+# CORS_ALLOWED_ORIGINS = [
+#   'https://example.kg',
+# ]
+
+# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'HEAD',
+    'OPTIONS',
+]
+CORS_ALLOW_ALL_ORIGINS = True
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
