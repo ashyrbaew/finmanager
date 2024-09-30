@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from decimal import Decimal
 from users.models import User
-from transactions.models import Transaction, UserTransaction
 
 
 class TransactionAPITestCase(TestCase):
