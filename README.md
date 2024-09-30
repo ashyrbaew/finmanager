@@ -52,6 +52,38 @@ $ python manage.py runserver
 The API can be tested using tools like Postman or curl you can also check it from browser
 http://127.0.0.1:8000/
 
+## 5. USAGE
+#### 5.1 To CREATE transaction, use below URL example, PAY ATTANTION that i use USER keyword to mention users:
+URL_Ex: http://localhost:8000/transactions/api/v1/transactions/
+
+  - **POST /transactions**
+  - **Body**:
+    ```json
+    {
+      "total_amount": 1000,
+      "senders": [
+        {"user": "sender_id_1", "share": 1}, #HERE not ID use users
+        {"user": "sender_id_2", "share": 4}
+      ],
+      "receivers": [
+        {"user": "receiver_id_1", "share": 2},
+        {"user": "receiver_id_2", "share": 3}
+      ]
+    }
+    ```
+
+
+#### 5.1 To get balance of users:
+URL_Ex: http://localhost:8000/transactions/api/v1/balances/{user_id}/
+- **GET HTTP method**
+- **Get User Balance**
+  - `transactions/api/v1/balances/1/`
+
+URL_Ex:http://localhost:8000/transactions/api/v1/balances/1/balance_history?start_date=2024-01-01&end_date=2024-12-31
+- **Get User Balance History For Specific period of time**
+  - `transactions/api/v1/balances/1/balance_history?start_date=2024-01-01&end_date=2024-12-31`
+
+
 ## Production environment setup
 ### 1. Set up the environment variables for production +
 Copy/rename and update .env_sample file in project root dir to .env, with same folder as 
