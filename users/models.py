@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     photo = models.ImageField(upload_to='photos/', blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
@@ -24,4 +25,8 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return self.first_name
+        return f"{self.username}- {self.first_name}"
+
+    def update_balance(self, amount):
+        self.balance += amount
+        self.save()

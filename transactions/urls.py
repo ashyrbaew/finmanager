@@ -1,5 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TransactionViewSet, UserBalanceViewSet
+
+
+router = DefaultRouter()
+router.register(r'transactions', TransactionViewSet, basename='transactions')
+router.register(r'balances', UserBalanceViewSet, basename='user-balance')
+
 
 urlpatterns = [
-    # path('register/', RegisterView.as_view(), name='register'),
+    path('', include(router.urls)),
 ]
