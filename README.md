@@ -62,12 +62,12 @@ URL_Ex: http://localhost:8000/transactions/api/v1/transactions/
     {
       "total_amount": 1000,
       "senders": [
-        {"user": "sender_id_1", "share": 1}, #HERE not ID use users
-        {"user": "sender_id_2", "share": 4}
+        {"user": "sender_id", "share": 1}, #HERE not ID use users
+        {"user": "sender_id", "share": 4}
       ],
       "receivers": [
-        {"user": "receiver_id_1", "share": 2},
-        {"user": "receiver_id_2", "share": 3}
+        {"user": "receiver_id", "share": 2},
+        {"user": "receiver_id", "share": 3}
       ]
     }
     ```
