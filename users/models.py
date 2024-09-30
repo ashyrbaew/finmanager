@@ -1,32 +1,32 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import F
+from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    company_name = models.CharField(max_length=255, blank=True, null=True)
+    balance = models.DecimalField(_('Net balance'), max_digits=12, decimal_places=2, default=0.00)
+    photo = models.ImageField(_('Profile image'), upload_to='photos/', blank=True, null=True)
+    phone_number = models.CharField(_('Phone'), max_length=15, blank=True, null=True)
+    address = models.TextField(_('Address'), blank=True, null=True)
     groups = models.ManyToManyField(
         'auth.Group',
-        related_name='custom_user_set',
         blank=True,
         verbose_name="groups",
+        related_name='custom_user_set',
     )
 
     user_permissions = models.ManyToManyField(
         'auth.Permission',
-        related_name='custom_user_permissions_set',
         blank=True,
         verbose_name="user permissions",
+        related_name='custom_user_permissions_set',
     )
 
-    def __str__(self):
-        return f"{self.username}- {self.first_name}"
-
     def update_balance(self, amount):
-        self.balance += amount
-        self.save()
+        #tO avoid race conditions
+        User.objects.filter(id=self.id).update(balance=F('balance') + amount)
+        self.refresh_from_db()
+
+    def __str__(self):
+        return f"{self.username} - {self.first_name}"
